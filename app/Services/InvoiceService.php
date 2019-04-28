@@ -61,6 +61,13 @@ class InvoiceService extends Service
         $invoice->customer_id = $customer->id;
         $invoice->status = Invoice::STATUS_GENERATED;
         $invoice->save();
+        $pdf = $this->prepareInvoiceFile($invoice);
+        return $pdf;
+    }
+
+
+    public function prepareInvoiceFile(Invoice $invoice)
+    {
         $invoice->loadMissing('items','customer');
         $overwrite = false;
         if (file_exists(public_path("invoices/".$invoice->customer->name.'/'.$invoice->id.'.pdf'))) {

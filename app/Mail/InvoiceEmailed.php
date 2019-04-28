@@ -29,8 +29,7 @@ class InvoiceEmailed extends Mailable
         $invoice = $this->invoice;
         return $this->view('emails.email', compact('invoice'))
             ->attach( public_path("invoices/".$invoice->customer->name.'/'.$invoice->id.'.pdf'), [
-                'as' => $invoice->customer.Carbon::now()->toFormattedDateString().'.pdf',
                 'mime' => 'application/pdf',
-            ]);;
+            ]);
     }
 }

@@ -10,7 +10,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Services\InvoiceService;
 use App\Exceptions\ServiceException;
-
+use Illuminate\Support\Facades\Response;
 class InvoiceController extends Controller
 {
     public function index(Request $request)
@@ -65,5 +65,14 @@ class InvoiceController extends Controller
         return $pdf;
     }
 
-
+    public function downloadInvoice(Request $request, InvoiceService $service)
+    {
+       try{
+           $invoice = Invoice::find($request->id);
+           $pdf = $service->prepareInvoiceFile($invoice);
+       }catch(ServiceException $exception){
+           return response(['custom_error' => $exception->getMessage(), 'message' => $exception->getMessage()], 422);
+       }
+       return $pdf->inline($invoice->customer->name.'.pdf');
+    }
 }

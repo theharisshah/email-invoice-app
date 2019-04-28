@@ -41,23 +41,31 @@
                             <td><a href="{{route('web::invoice-products', ['id'=>$invoice->id])}}"
                                    class="btn btn-sm btn-primary">Add/Remove Items</a></td>
                             <td>
-                                <a href="{{route('web::email.invoice', ['id'=>$invoice->id])}}" class="btn btn-sm btn-success">Send Invoice</a>
+                                <a href="{{route('web::email.invoice', ['id'=>$invoice->id])}}"
+                                   class="btn btn-sm btn-success">Send Invoice</a>
                             </td>
                             <td><a href="{{route('web::invoice.edit', ['id'=>$invoice->id])}}"
                                    class="btn btn-sm btn-light">Edit Invoice</a></td>
                             <td>
-                                <button class="btn btn-sm btn-info" data-toggle="modal" data-target="#generatePdf"
-                                        data-id="{{$invoice->id}}">Generate PDF
-                                </button>
+                                @if($invoice->status == 'invoice_generated')
+                                    <a class="btn btn-info btn-sm"
+                                            href="{{route('web::invoice.download', ['id'=>$invoice->id])}}"
+                                            id="open_invoice">Download Invoice
+                                    </a>
+                                @else
+                                    <button class="btn btn-sm btn-info" data-toggle="modal" data-target="#generatePdf"
+                                            data-id="{{$invoice->id}}" data-status="{{$invoice->status}}">Add Customer
+                                    </button>
+                                @endif
                             </td>
                         </tr>
-                    @endforeach
-                @else
-                    <tr>
-                        <td class="text-uppercase text-muted">No Invoices Yet!</td>
+                            @endforeach
+                        @else
+                            <tr>
+                                <td class="text-uppercase text-muted">No Invoices Yet!</td>
 
-                    </tr>
-                @endif
+                            </tr>
+                        @endif
                 </tbody>
             </table>
         </div>
@@ -69,6 +77,7 @@
     <script>
         $('#generatePdf').on('show.bs.modal', function (e) {
             button = $(e.relatedTarget);
+            status = button.data('status');
             id = button.data('id');
             modal = $(this);
             test = modal.find('.modal-body #invoice-id').val(id);

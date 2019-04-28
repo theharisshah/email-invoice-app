@@ -29,6 +29,8 @@ Route::get('/invoice/{id}', 'InvoiceController@edit')->name('invoice.edit');
 
 Route::post('invoice/generate', 'InvoiceController@generateInvoice')->name('invoice.generate');
 
+Route::get('invoice/download/{id}', 'InvoiceController@downloadInvoice')->name('invoice.download');
+
 
 //Customer end points
 
