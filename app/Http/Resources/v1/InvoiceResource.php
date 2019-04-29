@@ -16,8 +16,8 @@ class InvoiceResource extends JsonResource
     {
         return [
             'id' => $this->id,
+            'items'=> InvoiceProductResource::collection($this->items),
             'customer' => new CustomerResource($this->customer),
-            'invoice_items' => new InvoiceProductResource($this->items),
             'description' => $this->description,
             'date' => $this->date,
             'status' => $this->status,
