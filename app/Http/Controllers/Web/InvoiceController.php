@@ -73,6 +73,6 @@ class InvoiceController extends Controller
        }catch(ServiceException $exception){
            return response(['custom_error' => $exception->getMessage(), 'message' => $exception->getMessage()], 422);
        }
-       return $pdf->inline($invoice->customer->name.'.pdf');
+       return $pdf;
     }
 }
